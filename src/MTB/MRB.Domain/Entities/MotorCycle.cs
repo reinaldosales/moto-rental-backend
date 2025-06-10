@@ -1,0 +1,26 @@
+namespace MRB.Domain.Entities;
+
+public class MotorCycle : BaseEntity<long>
+{
+    public MotorCycle()
+    {
+        
+    }
+
+    public MotorCycle(
+        short year,
+        string model,
+        string licensePlate,
+        DateTime createdAt,
+        DateTime updatedAt,
+        DateTime? deletedAt) : base(createdAt, updatedAt, deletedAt)
+    {
+        Year = year;
+        Model = model;
+        LicensePlate = licensePlate;
+    }
+    
+    public short Year { get; private set; }
+    public string Model { get; private set; }
+    public string LicensePlate { get; private set; }
+}
