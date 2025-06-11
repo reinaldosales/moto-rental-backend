@@ -1,13 +1,13 @@
 namespace MRB.Domain.Entities;
 
-public class MotorCycle : BaseEntity<long>
+public class Motorcycle : BaseEntity<long>
 {
-    public MotorCycle()
+    public Motorcycle()
     {
         
     }
 
-    public MotorCycle(
+    public Motorcycle(
         short year,
         string model,
         string licensePlate,
