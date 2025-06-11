@@ -8,7 +8,7 @@ public class RentalRepository(AppDbContext dbContext) : IRentalRepository
 {
     private readonly AppDbContext _dbContext = dbContext;
     
-    public async Task Save(Rental entity)
+    public async Task SaveAsync(Rental entity)
     {
         await _dbContext.AddAsync(entity);
     }

@@ -8,7 +8,7 @@ public class DeliveryPersonRepository(AppDbContext dbContext) : IDeliveryPersonR
 {
     private readonly AppDbContext _dbContext = dbContext;
     
-    public async Task Save(DeliveryPerson entity)
+    public async Task SaveAsync(DeliveryPerson entity)
     {
         await _dbContext.AddAsync(entity);
     }

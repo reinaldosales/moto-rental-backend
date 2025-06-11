@@ -1,0 +1,18 @@
+using MRB.Domain.Entities;
+using MRB.Domain.Models.Create;
+
+namespace MRB.Application.Mappers;
+
+public class MotorcycleMapper
+{
+    public static Motorcycle FromModel(CreateMotorcycleModel model)
+    {
+        return new Motorcycle(
+            model.Year,
+            model.Model,
+            model.LicensePlate,
+            createdAt: DateTime.UtcNow,
+            updatedAt: DateTime.UtcNow, 
+            deletedAt: null);
+    }
+}

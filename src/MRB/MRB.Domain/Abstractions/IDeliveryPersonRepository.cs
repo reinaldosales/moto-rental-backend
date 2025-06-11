@@ -4,5 +4,5 @@ namespace MRB.Domain.Abstractions;
 
 public interface IDeliveryPersonRepository
 {
-    public Task Save(DeliveryPerson entity);
+    public Task SaveAsync(DeliveryPerson entity);
 }

@@ -6,4 +6,18 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.6"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.6"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.6"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="9.0.6"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.6"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\MRB.Application\MRB.Application.csproj"/>
+        <ProjectReference Include="..\MRB.Domain\MRB.Domain.csproj"/>
+        <ProjectReference Include="..\MRB.Infra.Data\MRB.Infra.Data.csproj"/>
+    </ItemGroup>
+
 </Project>
