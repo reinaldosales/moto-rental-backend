@@ -8,7 +8,7 @@ namespace MRB.Infra.IoC;
 
 public static class InfraestructureDependencyInjection
 {
-    public static IServiceCollection AddInfraestructureServices(this IServiceCollection services,
+    public static IServiceCollection AddInfraestructure(this IServiceCollection services,
         IConfiguration configuration)
     {
         string? connectionString = configuration.GetConnectionString("DefaultConnection");

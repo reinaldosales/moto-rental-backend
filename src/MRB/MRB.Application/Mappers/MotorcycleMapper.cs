@@ -1,3 +1,4 @@
+using MRB.Application.Models.Create;
 using MRB.Domain.Entities;
 using MRB.Domain.Models.Create;
 
@@ -11,6 +12,7 @@ public class MotorcycleMapper
             model.Year,
             model.Model,
             model.LicensePlate,
+            model.Identifier,
             createdAt: DateTime.UtcNow,
             updatedAt: DateTime.UtcNow, 
             deletedAt: null);

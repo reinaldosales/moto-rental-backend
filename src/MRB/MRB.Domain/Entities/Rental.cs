@@ -14,9 +14,10 @@ public class Rental : BaseEntity<long>
         DeliveryPerson deliveryPerson,
         DateTime end,
         DateTime? expectedReturnDate,
+        string identifier,
         DateTime createdAt,
         DateTime updatedAt,
-        DateTime? deletedAt) : base(createdAt, updatedAt, deletedAt)
+        DateTime? deletedAt) : base(identifier, createdAt, updatedAt, deletedAt)
     {
         DeliveryPerson = deliveryPerson;
         Start = createdAt.AddDays(1);

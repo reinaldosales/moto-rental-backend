@@ -1,6 +1,7 @@
-namespace MRB.Domain.Models.Create;
+namespace MRB.Application.Models.Create;
 
-public abstract record CreateMotorcycleModel(
+public record CreateMotorcycleModel(
+    string Identifier,
     short Year, 
     string Model,
     string LicensePlate);

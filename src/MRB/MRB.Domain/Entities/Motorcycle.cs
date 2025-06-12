@@ -11,9 +11,10 @@ public class Motorcycle : BaseEntity<long>
         short year,
         string model,
         string licensePlate,
+        string identifier,
         DateTime createdAt,
         DateTime updatedAt,
-        DateTime? deletedAt) : base(createdAt, updatedAt, deletedAt)
+        DateTime? deletedAt) : base(identifier ,createdAt, updatedAt, deletedAt)
     {
         Year = year;
         Model = model;

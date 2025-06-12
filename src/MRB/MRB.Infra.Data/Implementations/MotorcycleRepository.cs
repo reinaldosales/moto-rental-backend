@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using MRB.Domain.Abstractions;
 using MRB.Domain.Entities;
 using MRB.Infra.Data.Contexts;
@@ -11,5 +12,19 @@ public class MotorcycleRepository(AppDbContext dbContext) : IMotorcycleRepositor
     public async Task Save(Motorcycle entity)
     {
         await _dbContext.AddAsync(entity);
+    }
+
+    public async Task<IEnumerable<Motorcycle>> GetAll()
+    {
+        return await _dbContext.Motorcycles
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    public async Task<Motorcycle> GetByLicensePlate(string licensePlate)
+    {
+        return await _dbContext.Motorcycles
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.LicensePlate == licensePlate);
     }
 }

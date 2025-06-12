@@ -7,7 +7,7 @@ namespace MRB.Infra.IoC;
 
 public static class ServiceDependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+    public static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped<IDeliveryPersonService, DeliveryPersonService>();
         services.AddScoped<IMotorcycleService, MotorcycleService>();

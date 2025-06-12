@@ -16,9 +16,10 @@ public class DeliveryPerson : BaseEntity<long>
         string driverLicenseNumber,
         DriverLicense driverLicense,
         string? driverLicenseImage,
+        string identifier,
         DateTime createdAt,
         DateTime updatedAt,
-        DateTime? deletedAt) : base(createdAt, updatedAt, deletedAt)
+        DateTime? deletedAt) : base(identifier, createdAt, updatedAt, deletedAt)
     {
         Name = name;
         TaxId = taxId;

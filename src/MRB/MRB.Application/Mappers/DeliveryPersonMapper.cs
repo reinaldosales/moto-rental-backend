@@ -14,6 +14,7 @@ public class DeliveryPersonMapper
             model.DriverLicenseNumber,
             model.DriverLicense,
             model.DriverLicenseNumber,
+            model.identifier,
             createdAt: DateTime.UtcNow,
             updatedAt: DateTime.UtcNow,
             deletedAt: null);

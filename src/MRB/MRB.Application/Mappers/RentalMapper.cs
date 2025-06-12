@@ -11,6 +11,7 @@ public class RentalMapper
             model.deliveryPerson,
             model.end,
             model.expectedReturnDate,
+            model.Identifier,
             createdAt: DateTime.UtcNow,
             updatedAt: DateTime.UtcNow,
             deletedAt: null);
