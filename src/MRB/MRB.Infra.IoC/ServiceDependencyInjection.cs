@@ -12,6 +12,7 @@ public static class ServiceDependencyInjection
         services.AddScoped<IDeliveryPersonService, DeliveryPersonService>();
         services.AddScoped<IMotorcycleService, MotorcycleService>();
         services.AddScoped<IRentalService, RentalService>();
+        services.AddScoped<IMotorcycleCreatedService, MotorcycleCreatedService>();
         
         return services;
     }

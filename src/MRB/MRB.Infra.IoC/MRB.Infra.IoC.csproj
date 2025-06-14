@@ -16,6 +16,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\MRB.Application\MRB.Application.csproj"/>
+        <ProjectReference Include="..\MRB.Bus\MRB.Bus.csproj" />
         <ProjectReference Include="..\MRB.Domain\MRB.Domain.csproj"/>
         <ProjectReference Include="..\MRB.Infra.Data\MRB.Infra.Data.csproj"/>
     </ItemGroup>

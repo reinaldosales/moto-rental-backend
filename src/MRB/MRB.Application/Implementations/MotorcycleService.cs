@@ -4,14 +4,19 @@ using MRB.Application.Mappers;
 using MRB.Application.Models.Create;
 using MRB.Domain.Abstractions;
 using MRB.Domain.Entities;
+using MRB.Domain.Events;
 using MRB.Infra.Data.Abstractions;
 
 namespace MRB.Application.Implementations;
 
-public class MotorcycleService(IMotorcycleRepository motorcycleRepository, IUnitOfWork unitOfWork) : IMotorcycleService
+public class MotorcycleService(
+    IMotorcycleRepository motorcycleRepository,
+    IUnitOfWork unitOfWork,
+    IEventPublisher eventPublisher) : IMotorcycleService
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IMotorcycleRepository _motorcycleRepository = motorcycleRepository;
+    private readonly IEventPublisher _eventPublisher = eventPublisher;
 
     public async Task CreateMotorCycle(CreateMotorcycleModel model)
     {
@@ -21,7 +26,14 @@ public class MotorcycleService(IMotorcycleRepository motorcycleRepository, IUnit
 
         await _unitOfWork.CommitAsync();
 
-        //publish event
+        var @event = new MotorcycleCreatedDomainEvent(
+            year: entity.Year,
+            model: entity.Model,
+            licensePlate: entity.LicensePlate,
+            createdAt: entity.CreatedAt
+        );
+        
+        await _eventPublisher.PublishAsync(@event);
     }
 
     public async Task<IEnumerable<MotorcycleDto>> GetAll()
@@ -36,7 +48,7 @@ public class MotorcycleService(IMotorcycleRepository motorcycleRepository, IUnit
     public async Task<MotorcycleDto> GetByLicensePlate(string licensePlate)
     {
         var motorcycle = await _motorcycleRepository.GetByLicensePlate(licensePlate);
-        
+
         var motorcycleDto = new MotorcycleDto(
             motorcycle.Identifier,
             motorcycle.Year,
@@ -64,7 +76,7 @@ public class MotorcycleService(IMotorcycleRepository motorcycleRepository, IUnit
     public async Task<MotorcycleDto> GetById(long id)
     {
         var motorcycle = await _motorcycleRepository.GetById(id)
-            ?? throw new Exception("Motorcycle not found");
+                         ?? throw new Exception("Motorcycle not found");
 
         var motorcycleDto = new MotorcycleDto(
             motorcycle.Identifier,
@@ -93,7 +105,7 @@ public class MotorcycleService(IMotorcycleRepository motorcycleRepository, IUnit
     public async Task<MotorcycleDto> GetByIdentifier(string identifier)
     {
         var motorcycle = await _motorcycleRepository.GetByIdentifier(identifier)
-            ?? throw new Exception("Motorcycle not found");
+                         ?? throw new Exception("Motorcycle not found");
 
         var motorcycleDto = new MotorcycleDto(
             motorcycle.Identifier,

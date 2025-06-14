@@ -13,7 +13,7 @@ public class MotorcycleMap : IEntityTypeConfiguration<Motorcycle>
         builder.HasKey(x => x.Id);
 
         builder
-            .HasIndex(x => x.Model)
+            .HasIndex(x => x.LicensePlate)
             .IsUnique();
         
         builder

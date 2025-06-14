@@ -13,6 +13,7 @@ public static class RepositoryDependencyInjection
         services.AddScoped<IDeliveryPersonRepository, DeliveryPersonRepository>();
         services.AddScoped<IMotorcycleRepository, MotorcycleRepository>();
         services.AddScoped<IRentalRepository, RentalRepository>();
+        services.AddScoped<IMotorcycleCreatedRepository, MotorcycleCreatedRepository>();
         
         return services;
     }
