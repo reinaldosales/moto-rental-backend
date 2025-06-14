@@ -35,4 +35,7 @@ public class DeliveryPerson : BaseEntity<long>
     public string? DriverLicenseNumber { get; private set; }
     public DriverLicense? DriverLicense { get; private set; }
     public string? DriverLicenseImage { get; private set; }
+
+    public void UpdateDriverLicenseImage(string newDriverLicenseImage)
+        => DriverLicenseImage = newDriverLicenseImage;
 }

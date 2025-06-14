@@ -27,4 +27,16 @@ public class MotorcycleRepository(AppDbContext dbContext) : IMotorcycleRepositor
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.LicensePlate == licensePlate);
     }
+
+    public async Task<Motorcycle> GetById(long id)
+    {
+        return await _dbContext.Motorcycles
+            .FindAsync(id);
+    }
+
+    public async Task<Motorcycle> GetByIdentifier(string modelMotorcycleIdentifier)
+    {
+        return await _dbContext.Motorcycles
+            .FirstOrDefaultAsync(x => x.Identifier == modelMotorcycleIdentifier);
+    }
 }

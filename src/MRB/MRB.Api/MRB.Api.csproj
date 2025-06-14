@@ -27,8 +27,4 @@
       <ProjectReference Include="..\MRB.Infra.IoC\MRB.Infra.IoC.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="DTOs\" />
-    </ItemGroup>
-
 </Project>

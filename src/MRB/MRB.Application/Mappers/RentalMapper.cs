@@ -1,5 +1,5 @@
+using MRB.Application.Models.Create;
 using MRB.Domain.Entities;
-using MRB.Domain.Models.Create;
 
 namespace MRB.Application.Mappers;
 
@@ -7,13 +7,6 @@ public class RentalMapper
 {
     public static Rental FromModel(CreateRentalModel model)
     {
-        return new Rental(
-            model.deliveryPerson,
-            model.end,
-            model.expectedReturnDate,
-            model.Identifier,
-            createdAt: DateTime.UtcNow,
-            updatedAt: DateTime.UtcNow,
-            deletedAt: null);
+        return new Rental();
     }
 }

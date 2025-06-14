@@ -1,19 +1,25 @@
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
+using MRB.Domain.Enums;
 
 namespace MTB.Api.Contracts;
 
 public class CreateRentalRequest
 {
-    [Required, MinLength(1)]
-    public string Identificador { get; set; }
+    [Required]
+    public string Entregador_id { get; set; }
     
     [Required]
-    public short Ano { get; set; }
+    public string Moto_id { get; set; }
     
-    [Required, MinLength(1)]
-    public string Modelo { get; set; }
+    [Required]
+    public DateTime Data_Inicio { get; set; }
     
-    [Required, MinLength(1)]
-    public string Placa { get; set; }
+    [Required]
+    public DateTime Data_Termino { get; set; }
+    
+    [Required]
+    public DateTime Data_Previsao_Termino { get; set; }
+    
+    [Required]
+    public RentalPlan plano { get; set; }
 }

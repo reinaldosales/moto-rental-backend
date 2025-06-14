@@ -11,5 +11,8 @@ public class RentalMap : IEntityTypeConfiguration<Rental>
         builder.ToTable("rentals");
         
         builder.HasKey(x => x.Id);
+        
+        builder
+            .HasQueryFilter(t => t.DeletedAt == null);
     }
 }

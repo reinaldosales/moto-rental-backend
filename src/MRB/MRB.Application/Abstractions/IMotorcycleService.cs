@@ -1,12 +1,16 @@
+using MRB.Application.DTOs;
 using MRB.Application.Models.Create;
 using MRB.Domain.Entities;
-using MRB.Domain.Models.Create;
 
 namespace MRB.Application.Abstractions;
 
 public interface IMotorcycleService
 {
-    public Task Save(CreateMotorcycleModel model);
-    public Task<IEnumerable<Motorcycle>> GetAll();
-    public Task<Motorcycle> GetByLicensePlate(string licensePlate);
+    public Task CreateMotorCycle(CreateMotorcycleModel model);
+    public Task<IEnumerable<MotorcycleDto>> GetAll();
+    public Task<MotorcycleDto> GetByLicensePlate(string licensePlate);
+    public Task<bool> UpdateLicensePlate(string identifier, string newLicensePlate);
+    public Task<MotorcycleDto> GetById(long id);
+    public Task<bool> Delete(string id);
+    Task<MotorcycleDto> GetByIdentifier(string identifier);
 }

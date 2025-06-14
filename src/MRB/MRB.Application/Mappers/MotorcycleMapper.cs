@@ -1,6 +1,5 @@
 using MRB.Application.Models.Create;
 using MRB.Domain.Entities;
-using MRB.Domain.Models.Create;
 
 namespace MRB.Application.Mappers;
 

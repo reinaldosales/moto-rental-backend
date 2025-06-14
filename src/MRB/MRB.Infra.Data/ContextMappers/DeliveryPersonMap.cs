@@ -15,5 +15,8 @@ public class DeliveryPersonMap : IEntityTypeConfiguration<DeliveryPerson>
         builder
             .HasIndex(x => new { x.TaxId, x.DriverLicenseNumber})
             .IsUnique();
+        
+        builder
+            .HasQueryFilter(t => t.DeletedAt == null);
     }
 }

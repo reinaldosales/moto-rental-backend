@@ -13,7 +13,7 @@ public class DeliveryPersonMapper
             model.BirthDate,
             model.DriverLicenseNumber,
             model.DriverLicense,
-            model.DriverLicenseNumber,
+            model.DriverLicenseImage,
             model.identifier,
             createdAt: DateTime.UtcNow,
             updatedAt: DateTime.UtcNow,

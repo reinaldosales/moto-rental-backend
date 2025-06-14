@@ -3,6 +3,7 @@ using System;
 using MRB.Infra.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MRB.Infra.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250613021208_InitiatedAtInRental")]
+    partial class InitiatedAtInRental
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -163,10 +166,6 @@ namespace MRB.Infra.Data.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("expected_return_date");
 
-                    b.Property<decimal>("Fine")
-                        .HasColumnType("numeric")
-                        .HasColumnName("fine");
-
                     b.Property<string>("Identifier")
                         .IsRequired()
                         .HasColumnType("text")
@@ -179,14 +178,6 @@ namespace MRB.Infra.Data.Migrations
                     b.Property<long>("MotorcycleId")
                         .HasColumnType("bigint")
                         .HasColumnName("motorcycle_id");
-
-                    b.Property<int>("Plan")
-                        .HasColumnType("integer")
-                        .HasColumnName("plan");
-
-                    b.Property<DateTime?>("ReturnDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("return_date");
 
                     b.Property<DateTime>("Start")
                         .HasColumnType("timestamp with time zone")

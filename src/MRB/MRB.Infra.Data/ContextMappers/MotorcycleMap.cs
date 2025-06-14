@@ -15,5 +15,8 @@ public class MotorcycleMap : IEntityTypeConfiguration<Motorcycle>
         builder
             .HasIndex(x => x.Model)
             .IsUnique();
+        
+        builder
+            .HasQueryFilter(t => t.DeletedAt == null);
     }
 }

@@ -24,4 +24,7 @@ public class Motorcycle : BaseEntity<long>
     public short Year { get; private set; }
     public string Model { get; private set; }
     public string LicensePlate { get; private set; }
+    
+    public void UpdateLicensePlate(string newLicensePlate)
+        => LicensePlate = newLicensePlate;
 }

@@ -1,9 +1,12 @@
 using MRB.Domain.Entities;
+using MRB.Domain.Enums;
 
-namespace MRB.Domain.Models.Create;
+namespace MRB.Application.Models.Create;
 
-public abstract record CreateRentalModel(
-    string Identifier,
-    DeliveryPerson deliveryPerson,
-    DateTime end,
-    DateTime? expectedReturnDate);
+public record CreateRentalModel(
+    string DeliveryPersonIdentifier,
+    string MotorcycleIdentifier,
+    DateTime Start,
+    DateTime End,
+    DateTime? ExpectedReturnDate,
+    RentalPlan Plan);

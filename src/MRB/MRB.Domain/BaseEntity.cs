@@ -17,4 +17,7 @@ public class BaseEntity<T>
     public DateTime CreatedAt { get; private set; }
     public DateTime UpdatedAt { get; private set; }
     public DateTime? DeletedAt { get; private set; }
+
+    public void Delete() => DeletedAt = DateTime.UtcNow;
+    public void UpdateUpdatedAt() => UpdatedAt = DateTime.UtcNow;
 }

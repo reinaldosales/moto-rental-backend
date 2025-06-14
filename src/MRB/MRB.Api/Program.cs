@@ -2,8 +2,9 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MRB.Application.Abstractions;
+using MRB.Application.Helpers;
 using MRB.Application.Models.Create;
-using MRB.Domain.Models.Create;
+using MRB.Domain.Exceptions;
 using MRB.Infra.Data.Abstractions;
 using MRB.Infra.IoC;
 using MTB.Api.Contracts;
@@ -29,31 +30,30 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var motorcycles = app.MapGroup("/motorcycles").WithOpenApi();
+var motorcycles = app.MapGroup("/motos").WithOpenApi();
 
 motorcycles.MapPost("/", CreateMotorcycle).WithOpenApi();
 motorcycles.MapGet("/", GetMotorcycles).WithOpenApi();
-motorcycles.MapPut("/{id:long}/licensePlate", UpdateLicensePlate).WithOpenApi();
-motorcycles.MapGet("/{id:long}", GetMotorcycleById).WithOpenApi();
-motorcycles.MapDelete("/{id:long}", DeleteMotorcycle).WithOpenApi();
+motorcycles.MapPut("/{id}/placa", UpdateLicensePlate).WithOpenApi();
+motorcycles.MapGet("/{id}", GetMotorcycleById).WithOpenApi();
+motorcycles.MapDelete("/{id}", DeleteMotorcycle).WithOpenApi();
 
-var deliveryPeople = app.MapGroup("/deliveryPeople").WithOpenApi();
+var deliveryPeople = app.MapGroup("/entregadores").WithOpenApi();
 
 deliveryPeople.MapPost("/", CreateDeliveryPerson).WithOpenApi();
-deliveryPeople.MapPost("/{id:long}/driverLicense", UploadDriverLicense).WithOpenApi();
+deliveryPeople.MapPost("/{id}/cnh", UploadDriverLicense).WithOpenApi();
 
-var rentals = app.MapGroup("/rentals").WithOpenApi();
+var rentals = app.MapGroup("/locacao").WithOpenApi();
 
 rentals.MapPost("/", CreateRental).WithOpenApi();
-rentals.MapGet("/{id:long}", GetRentalById).WithOpenApi();
-rentals.MapPut("/{id:long}/return", ReturnRental).WithOpenApi();
+rentals.MapGet("/{id}", GetRentalById).WithOpenApi();
+rentals.MapPut("/{id}/devolucao", ReturnRental).WithOpenApi();
 
 app.Run();
 
 
 static async Task<IResult> CreateMotorcycle(
-    [FromBody] CreateRentalRequest model,
-    IUnitOfWork unitOfWork,
+    [FromBody] CreateMotorcycleRequest model,
     IMotorcycleService motorcycleService)
 {
     try
@@ -67,19 +67,14 @@ static async Task<IResult> CreateMotorcycle(
         var createMotorcycleModel =
             new CreateMotorcycleModel(model.Identificador, model.Ano, model.Modelo, model.Placa);
 
-        await motorcycleService.Save(createMotorcycleModel);
+        await motorcycleService.CreateMotorCycle(createMotorcycleModel);
 
-        await unitOfWork.CommitAsync();
-
-        //publish event
+        return Results.Created();
     }
     catch (Exception ex)
     {
-        if (ex is DbUpdateException)
-            return Results.BadRequest(new { mensagem = "Moto já cadastrada" });
+        return Results.BadRequest(new { mensagem = "Dados inválidos" });
     }
-
-    return Results.Accepted();
 }
 
 static async Task<IResult> GetMotorcycles(
@@ -92,42 +87,175 @@ static async Task<IResult> GetMotorcycles(
         : Results.Ok(await motorcycleService.GetByLicensePlate(licensePlate));
 }
 
-static async Task<IResult> UpdateLicensePlate(long id)
+static async Task<IResult> UpdateLicensePlate(
+    string identifier,
+    UpdateMotorcyleLicencePlateRequest model,
+    IMotorcycleService motorcycleService)
 {
-    return Results.Ok();
+    var validationResults = new List<ValidationResult>();
+    var context = new ValidationContext(model);
+
+    if (!Validator.TryValidateObject(model, context, validationResults, true))
+        return Results.BadRequest(new { mensagem = "Dados inválidos" });
+
+    var updated = await motorcycleService.UpdateLicensePlate(identifier, model.Placa);
+
+    return updated
+        ? Results.Ok(new { mensagem = "Placa modificada com sucesso" })
+        : Results.BadRequest(new { mensagem = "Moto não encontrada" });
 }
 
-static async Task<IResult> GetMotorcycleById(long id)
+static async Task<IResult> GetMotorcycleById(
+    string identifier,
+    IMotorcycleService motorcycleService)
 {
-    return Results.Ok();
+    try
+    {
+        var motorcycle = await motorcycleService.GetByIdentifier(identifier);
+
+        return Results.Ok(motorcycle);
+    }
+    catch (Exception e)
+    {
+        return Results.NotFound(new { mensagem = "Moto não encontrada" });
+    }
 }
 
-static async Task<IResult> DeleteMotorcycle(long id)
+static async Task<IResult> DeleteMotorcycle(
+    string identifier,
+    IMotorcycleService motorcycleService)
 {
-    return Results.Ok();
+    var updated = await motorcycleService.Delete(identifier);
+
+    return updated
+        ? Results.Ok()
+        : Results.BadRequest(new { mensagem = "Dados inválidos" });
 }
 
-static async Task<IResult> CreateDeliveryPerson(CreateDeliveryPersonModel model)
+static async Task<IResult> CreateDeliveryPerson(
+    CreateDeliveryPersonRequest model,
+    IDeliveryPersonService deliveryPersonService)
 {
-    return Results.Ok();
+    try
+    {
+        var validationResults = new List<ValidationResult>();
+        var context = new ValidationContext(model);
+
+        if (!Validator.TryValidateObject(model, context, validationResults, true))
+            return Results.BadRequest(new { mensagem = "Dados inválidos" });
+        
+        var fullpath = ImageHelper.SaveBase64Image(model.Imagem_Cnh);
+
+        var deliveryPersonModel = new CreateDeliveryPersonModel(
+            model.Identificador,
+            model.Nome,
+            model.Cnpj,
+            DateTime.SpecifyKind(model.Data_Nascimento, DateTimeKind.Utc),
+            model.Numero_Cnh,
+            model.Tipo_Cnh,
+            fullpath);
+
+        await deliveryPersonService.Save(deliveryPersonModel);
+
+        return Results.Created();
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(new { mensagem = "Dados inválidos" });
+    }
 }
 
-static async Task<IResult> UploadDriverLicense(string driverLicense)
+static async Task<IResult> UploadDriverLicense(
+    string identifier,
+    UpdateDeliveryPersonDriverLicenseRequest model,
+    IDeliveryPersonService deliveryPersonService)
 {
-    return Results.Ok();
+    try
+    {
+        var validationResults = new List<ValidationResult>();
+        var context = new ValidationContext(model);
+
+        if (!Validator.TryValidateObject(model, context, validationResults, true))
+            return Results.BadRequest(new { mensagem = "Dados inválidos" });
+
+        var fullpath = ImageHelper.SaveBase64Image(model.Imagem_Cnh);
+
+        await deliveryPersonService.UpdateDriverLicenseImage(fullpath, identifier);
+
+        return Results.Created();
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(new { mensagem = "Dados inválidos" });
+    }
 }
 
-static async Task<IResult> CreateRental(CreateRentalModel model)
+static async Task<IResult> CreateRental(
+    CreateRentalRequest model,
+    IRentalService rentalService)
 {
-    return Results.Ok();
+    try
+    {
+        var validationResults = new List<ValidationResult>();
+        var context = new ValidationContext(model);
+
+        if (!Validator.TryValidateObject(model, context, validationResults, true))
+            return Results.BadRequest(new { mensagem = "Dados inválidos" });
+
+        var createRentalModel = new CreateRentalModel(
+            model.Entregador_id,
+            model.Moto_id,
+            DateTime.SpecifyKind(model.Data_Inicio, DateTimeKind.Utc),
+            DateTime.SpecifyKind(model.Data_Termino, DateTimeKind.Utc),
+            DateTime.SpecifyKind(model.Data_Previsao_Termino, DateTimeKind.Utc),
+            model.plano
+        );
+
+        await rentalService.Save(createRentalModel);
+
+        return Results.Created();
+    }
+    catch (Exception e)
+    {
+        return Results.BadRequest(new { mensagem = "Dados inválidos" });
+    }
 }
 
-static async Task<IResult> GetRentalById(long id)
+static async Task<IResult> GetRentalById(
+    string identifier,
+    IRentalService rentalService)
 {
-    return Results.Ok();
+    try
+    {
+        var rental = await rentalService.GetByIdentifier(identifier);
+
+        return Results.Ok(rental);
+    }
+    catch (Exception e)
+    {
+        return Results.BadRequest(new { mensagem = "Dados inválidos" });
+    }
 }
 
-static async Task<IResult> ReturnRental(long id)
+static async Task<IResult> ReturnRental(
+    string identifier,
+    ReturnRentalRequest model,
+    IRentalService rentalService)
 {
-    return Results.Ok();
+    try
+    {
+        var validationResults = new List<ValidationResult>();
+        var context = new ValidationContext(model);
+
+        if (!Validator.TryValidateObject(model, context, validationResults, true))
+            return Results.BadRequest(new { mensagem = "Dados inválidos" });
+        
+        await rentalService.Return(identifier, model.Data_Devolucao);
+
+        return Results.Ok(new { mensagem = "Data de devolução informada com sucesso" });
+    }
+    catch (Exception e)
+    {
+        return Results.BadRequest(new { mensagem = "Dados inválidos" });
+    }
 }
