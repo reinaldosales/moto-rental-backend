@@ -17,6 +17,8 @@ services:
       POSTGRES_USER: postgres
     ports:
       - '5432:5432'
+    networks:
+      - backend
 
   rabbitmq:
     image: rabbitmq:4.1.0-management
@@ -33,21 +35,23 @@ services:
       NAME: "rabbitmq"
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - backend
 
-  # mrb-api:
-  #   build:
-  #     context: ../src/MRB
-  #     dockerfile: ../../docker/Dockerfile
-  #   container_name: mrb-api
-  #   depends_on:
-  #     - rabbitmq
-  #     - postgres
-  #   environment:
-  #     - ASPNETCORE_ENVIRONMENT=Development
-  #   ports:
-  #     - "5000:8080"  # Mapeando a porta externa 5000 para a interna 8080 (do EXPOSE)
-  #   networks:
-  #     - backend
+  mrb-api:
+    build:
+      context: ../src/MRB
+      dockerfile: MRB.Api/Dockerfile
+    container_name: mrb-api
+    depends_on:
+      - rabbitmq
+      - postgres
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "5000:8080"  # Mapeando a porta externa 5000 para a interna 8080 (do EXPOSE)
+    networks:
+      - backend
 
 volumes:
   rabbitmq_data:
