@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace MTB.Api.Contracts;
+namespace MRB.Api.Contracts;
 
 public class ReturnRentalRequest
 {

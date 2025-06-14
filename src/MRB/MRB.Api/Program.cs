@@ -1,13 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using MRB.Api.Contracts;
 using MRB.Application.Abstractions;
 using MRB.Application.Helpers;
 using MRB.Application.Models.Create;
-using MRB.Domain.Exceptions;
-using MRB.Infra.Data.Abstractions;
 using MRB.Infra.IoC;
-using MTB.Api.Contracts;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);

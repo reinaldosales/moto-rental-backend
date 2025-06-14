@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 
-namespace MTB.Api.Contracts;
+namespace MRB.Api.Contracts;
 
 public class CreateMotorcycleRequest
 {

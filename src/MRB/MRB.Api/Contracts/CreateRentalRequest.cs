@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using MRB.Domain.Enums;
 
-namespace MTB.Api.Contracts;
+namespace MRB.Api.Contracts;
 
 public class CreateRentalRequest
 {

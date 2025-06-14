@@ -5,7 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-        <RootNamespace>MTB.Api</RootNamespace>
+        <RootNamespace>MRB.Api</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
