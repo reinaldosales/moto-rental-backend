@@ -257,3 +257,5 @@ static async Task<IResult> ReturnRental(
         return Results.BadRequest(new { mensagem = "Dados inválidos" });
     }
 }
+
+public partial class Program { }
