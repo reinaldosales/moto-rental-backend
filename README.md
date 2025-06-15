@@ -11,7 +11,7 @@ API para gestão de aluguel de motos, com cadastro de motos, entregadores, loca�
 - **PostgreSQL** (banco de dados relacional)
 - **Docker** e **Docker Compose**
 - **NUnit** (testes automatizados)
-- **OpenAPI/Swagger** (documentação automática)
+- **OpenAPI/Scalar** (documentação automática)
 
 ## Como Executar o Projeto
 
