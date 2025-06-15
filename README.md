@@ -1,5 +1,4 @@
 # moto-rental-backend
-# moto-rental-backend
 
 API para gestão de aluguel de motos, com cadastro de motos, entregadores, locações e integração com mensageria.
 
