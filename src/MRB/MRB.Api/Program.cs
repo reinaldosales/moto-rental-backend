@@ -1,9 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MRB.Api.Contracts;
 using MRB.Application.Abstractions;
 using MRB.Application.Helpers;
 using MRB.Application.Models.Create;
+using MRB.Infra.Data.Contexts;
 using MRB.Infra.IoC;
 using Scalar.AspNetCore;
 
@@ -19,6 +21,12 @@ builder.Services.AddServices();
 builder.Services.AddMessaging(builder.Configuration);
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
 
 if (app.Environment.IsDevelopment())
 {
