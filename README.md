@@ -22,6 +22,8 @@ API para gestão de aluguel de motos, com cadastro de motos, entregadores, loca�
 
 ### Executando com Docker Compose
 
+Obs.: por padrão o appsettings.development está para localhost, antes de utilizar o dockercompose, atualizar o localhost do RabbitMq e PostgreSQL para rabbit e postgres respectivamente.
+
 1. No terminal, navegue até a pasta `docker` do projeto:
 
     ```sh
